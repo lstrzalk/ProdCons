@@ -5,6 +5,8 @@ public class Producent extends Thread{
         this.m=m;
     }
     public void run(){
-        m.produce();
+        for (int i=0;i<10;i++){
+            m.produce();
+        }
     }
 }

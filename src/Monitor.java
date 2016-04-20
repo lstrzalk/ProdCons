@@ -14,7 +14,7 @@ public class Monitor {
         lock=new ReentrantLock[n];
         cond=new Condition[n];
 		for(int i = 0 ; i < n ; i++){
-			free.add(i);
+			free.addLast(i);
             lock[i]=new ReentrantLock();
             cond[i]=lock[i].newCondition();
 		}
@@ -40,10 +40,10 @@ public class Monitor {
         }
         lock[index].lock();
         buf.setIndexBuffer(index,1);
+        full.addLast(index);
         synchronized (this){
             this.notify();
         }
-        full.addLast(index);
         cond[index].signal();
         lock[index].unlock();
 	}
@@ -68,10 +68,10 @@ public class Monitor {
         }
         lock[index].lock();
         buf.getIndexValue(index);
+        free.add(index);
         synchronized (this){
             this.notify();
         }
-        free.addLast(index);
         cond[index].signal();
         lock[index].unlock();
 	}
